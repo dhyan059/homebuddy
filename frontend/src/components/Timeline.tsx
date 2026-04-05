@@ -18,27 +18,33 @@ export function Timeline({ currentStage }: TimelineProps) {
   const currentIndex = STAGES.findIndex(s => s.key === currentStage);
 
   return (
-    <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+    <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-primary/20 before:via-slate-200 before:to-transparent pt-4">
       {STAGES.map((stage, index) => {
         const isCompleted = index < currentIndex;
         const isCurrent = index === currentIndex;
-        const isPending = index > currentIndex;
 
         return (
-          <div key={stage.key} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full border-white border-4 flex-shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 shadow transition-all ${isCompleted ? 'bg-green-500 text-white' : isCurrent ? 'bg-primary text-white ring-4 ring-primary/20' : 'bg-gray-200 text-gray-400'}`}>
-              {isCompleted ? <Check className="h-5 w-5" /> : isCurrent ? <Clock className="h-5 w-5 animate-pulse" /> : <div className="w-2.5 h-2.5 bg-gray-400 rounded-full" />}
+          <div key={stage.key} className="relative flex items-start gap-4 group">
+            <div className="relative mt-1">
+               {/* Pulsing ring for current item */}
+               {isCurrent && <div className="absolute inset-0 bg-primary/20 rounded-full animate-ping scale-150"></div>}
+               <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border-white border-4 z-10 shadow-sm transition-all duration-300 ${isCompleted ? 'bg-green-500 text-white' : isCurrent ? 'bg-primary text-white scale-110' : 'bg-gray-100 text-gray-300'}`}>
+                 {isCompleted ? <Check className="h-5 w-5" /> : isCurrent ? <Clock className="h-4 w-4 animate-spin-slow" /> : <div className="w-2 h-2 bg-gray-300 rounded-full" />}
+               </div>
             </div>
             
-            <div className={`w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border shadow-sm transition-all ${isCurrent ? 'border-primary bg-primary/5' : 'border-slate-100 bg-white opacity-80'}`}>
-              <div className="flex items-center justify-between space-x-2 mb-1">
-                <div className={`font-bold ${isCurrent ? 'text-primary' : isPending ? 'text-gray-400' : 'text-gray-800'}`}>
-                  {stage.label}
-                </div>
-              </div>
-              <div className={`text-sm ${isCurrent ? 'text-gray-600' : 'text-gray-500'}`}>
-                {stage.description}
-              </div>
+            <div className="flex-1 pb-4">
+               <div className={`font-bold transition-all ${isCurrent ? 'text-primary text-lg' : isCompleted ? 'text-gray-900' : 'text-gray-400'}`}>
+                 {stage.label}
+               </div>
+               <div className={`text-sm mt-0.5 transition-all ${isCurrent ? 'text-gray-600' : isCompleted ? 'text-gray-500' : 'text-gray-400'}`}>
+                 {stage.description}
+               </div>
+               {isCurrent && stage.key === "OnTheWay" && (
+                  <div className="mt-3 inline-block bg-primary/10 text-primary border border-primary/20 px-3 py-1.5 text-xs font-black uppercase tracking-widest flex items-center gap-2 rounded">
+                    <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Tracking Active
+                  </div>
+               )}
             </div>
           </div>
         );
