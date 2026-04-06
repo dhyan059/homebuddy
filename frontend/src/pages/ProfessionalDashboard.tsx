@@ -50,6 +50,9 @@ export default function ProfessionalDashboard() {
   const [activeTab, setActiveTab] = useState<'requests' | 'history' | 'profile'>('requests');
   const [profName, setProfName] = useState("Demo Professional");
   const [profService, setProfService] = useState("AC Technician");
+  const [profExperience, setProfExperience] = useState("5+ Years");
+  const [profLocation, setProfLocation] = useState("Gurgaon, Haryana");
+  const [jobs, setJobs] = useState(completedJobs);
 
   useEffect(() => {
     // Check if professional is authenticated
@@ -60,9 +63,15 @@ export default function ProfessionalDashboard() {
 
     const storedName = localStorage.getItem("professionalName");
     const storedService = localStorage.getItem("professionalService");
+    const storedExp = localStorage.getItem("professionalExperience");
+    const storedLoc = localStorage.getItem("professionalLocation");
+    const isNew = localStorage.getItem("isNewProfessional") === "true";
     
     if (storedName) setProfName(storedName);
     if (storedService) setProfService(storedService);
+    if (storedExp) setProfExperience(storedExp + " Years");
+    if (storedLoc) setProfLocation(storedLoc);
+    if (isNew) setJobs([]);
     
   }, [navigate]);
 
@@ -186,7 +195,12 @@ export default function ProfessionalDashboard() {
                <h1 className="text-3xl font-bold text-gray-900 mb-8">Job History</h1>
                
                <div className="space-y-4">
-                 {completedJobs.map(job => (
+                 {jobs.length === 0 ? (
+                    <div className="text-center py-12 bg-white rounded-xl border border-gray-200">
+                      <p className="text-gray-500 font-medium">No job history available yet.</p>
+                      <p className="text-sm text-gray-400 mt-1">Complete your first job to see it here.</p>
+                    </div>
+                 ) : jobs.map(job => (
                    <div key={job.id} className="bg-white border border-gray-200 rounded-xl p-5 flex flex-col sm:flex-row gap-6 sm:items-center">
                      <div className="flex-grow">
                         <div className="flex items-center gap-3 mb-2">
@@ -226,11 +240,11 @@ export default function ProfessionalDashboard() {
                    </div>
                    <div>
                      <label className="block text-sm font-bold text-gray-500 mb-1">Experience</label>
-                     <div className="text-gray-900 font-medium">5+ Years</div>
+                     <div className="text-gray-900 font-medium">{profExperience}</div>
                    </div>
                    <div>
                      <label className="block text-sm font-bold text-gray-500 mb-1">Service Area</label>
-                     <div className="text-gray-900 font-medium">Gurgaon, Haryana</div>
+                     <div className="text-gray-900 font-medium">{profLocation}</div>
                    </div>
                  </div>
                </div>

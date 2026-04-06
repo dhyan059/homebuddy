@@ -5,6 +5,9 @@ import { categories, services } from "../utils/data";
 import { CategoryCard } from "../components/CategoryCard";
 import { ServiceCard } from "../components/ServiceCard";
 import { SearchBar } from "../components/SearchBar";
+import repairImg from "../assets/leakage_repair.png";
+import cleaningImg from "../assets/home_cleaning.png";
+import beautyImg from "../assets/haircut_styling.png";
 
 export default function Home() {
   const topServices = services.filter(s => s.rating >= 4.8).slice(0, 3);
@@ -88,7 +91,7 @@ export default function Home() {
                 <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide mb-4 inline-block">Limited Time</span>
                 <h3 className="text-2xl font-bold mb-2">Get 20% Off on Beauty Services</h3>
                 <p className="text-pink-100 mb-6 max-w-sm">Book your first at-home salon experience and enjoy a premium discount.</p>
-                <Link to="/services?category=beauty" className="bg-white text-secondary font-bold px-6 py-2 rounded-full inline-flex items-center gap-2 hover:bg-gray-50 transition-colors w-max">
+                <Link to="/services?category=c1" className="bg-white text-secondary font-bold px-6 py-2 rounded-full inline-flex items-center gap-2 hover:bg-gray-50 transition-colors w-max">
                   Claim Offer <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -100,7 +103,7 @@ export default function Home() {
                 <span className="bg-white/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide mb-4 inline-block">New Users</span>
                 <h3 className="text-2xl font-bold mb-2">₹500 Cashback on Deep Cleaning</h3>
                 <p className="text-blue-100 mb-6 max-w-sm">Give your home the ultimate glow-up with our expert cleaners.</p>
-                <Link to="/services?category=cleaning" className="bg-white text-indigo-600 font-bold px-6 py-2 rounded-full inline-flex items-center gap-2 hover:bg-gray-50 transition-colors w-max">
+                <Link to="/services?category=c3" className="bg-white text-indigo-600 font-bold px-6 py-2 rounded-full inline-flex items-center gap-2 hover:bg-gray-50 transition-colors w-max">
                   Book Now <ArrowRight className="h-4 w-4" />
                 </Link>
               </div>
@@ -133,47 +136,38 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all bg-white relative">
+            <Link to="/services?category=c2" className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all bg-white relative block w-full">
               <div className="h-64 overflow-hidden relative">
-                <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800" alt="Plumber fixing" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={repairImg} alt="Plumber fixing" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent"></div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-xl font-bold text-white mb-1">Expert Repairs</h3>
-                <p className="text-gray-200 text-sm mb-4">Quick and reliable fixes for your home appliances and plumbing.</p>
-                <Link to="/services?category=repairs" className="text-pink-300 font-medium hover:text-white flex items-center gap-1 transition-colors">
-                  Explore Services <ArrowRight className="h-4 w-4" />
-                </Link>
+                <p className="text-gray-200 text-sm">Quick and reliable fixes for your home appliances and plumbing.</p>
               </div>
-            </div>
+            </Link>
 
-            <div className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all bg-white relative">
+            <Link to="/services?category=c3" className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all bg-white relative block w-full">
               <div className="h-64 overflow-hidden relative">
-                <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&q=80&w=800" alt="Home Cleaning" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={cleaningImg} alt="Home Cleaning" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent"></div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-xl font-bold text-white mb-1">Deep Home Cleaning</h3>
-                <p className="text-gray-200 text-sm mb-4">Sparkling clean homes, inside and out. Vetted professionals.</p>
-                <Link to="/services?category=cleaning" className="text-pink-300 font-medium hover:text-white flex items-center gap-1 transition-colors">
-                  Explore Services <ArrowRight className="h-4 w-4" />
-                </Link>
+                <p className="text-gray-200 text-sm">Sparkling clean homes, inside and out. Vetted professionals.</p>
               </div>
-            </div>
+            </Link>
 
-            <div className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all bg-white relative">
+            <Link to="/services?category=c1" className="group rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all bg-white relative block w-full">
               <div className="h-64 overflow-hidden relative">
-                <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=800" alt="At home salon" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={beautyImg} alt="At home salon" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent"></div>
               </div>
               <div className="absolute bottom-0 left-0 right-0 p-6">
                 <h3 className="text-xl font-bold text-white mb-1">Beauty & Wellness</h3>
-                <p className="text-gray-200 text-sm mb-4">Relaxing salon services in the comfort of your own home.</p>
-                <Link to="/services?category=beauty" className="text-pink-300 font-medium hover:text-white flex items-center gap-1 transition-colors">
-                  Explore Services <ArrowRight className="h-4 w-4" />
-                </Link>
+                <p className="text-gray-200 text-sm">Relaxing salon services in the comfort of your own home.</p>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
       </section>

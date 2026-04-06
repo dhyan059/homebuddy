@@ -29,7 +29,7 @@ export function Navbar() {
               <Link to="/services" className="text-gray-600 hover:text-primary transition-colors text-sm font-medium">
                 Services
               </Link>
-              <Link to="/services?category=beauty" className="text-gray-600 hover:text-secondary transition-colors text-sm font-medium">
+              <Link to="/services?category=c1" className="text-gray-600 hover:text-secondary transition-colors text-sm font-medium">
                 Beauty
               </Link>
             </div>

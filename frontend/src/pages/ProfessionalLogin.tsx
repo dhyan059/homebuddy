@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, Lock, Briefcase, Mail } from "lucide-react";
+import { User, Lock, Briefcase, Mail, MapPin } from "lucide-react";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 
@@ -11,7 +11,9 @@ export default function ProfessionalLogin() {
     name: "",
     email: "",
     password: "",
-    service: ""
+    service: "",
+    experience: "",
+    location: ""
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,6 +26,9 @@ export default function ProfessionalLogin() {
       if (!isLogin) {
          localStorage.setItem("professionalName", formData.name);
          localStorage.setItem("professionalService", formData.service);
+         localStorage.setItem("professionalExperience", formData.experience);
+         localStorage.setItem("professionalLocation", formData.location);
+         localStorage.setItem("isNewProfessional", "true");
       }
       navigate('/professional-dashboard');
     }, 1500);
@@ -71,6 +76,32 @@ export default function ProfessionalLogin() {
                       required
                       value={formData.service}
                       onChange={(e) => setFormData({...formData, service: e.target.value})}
+                      className="pl-12 bg-gray-50 focus:bg-white"
+                      containerClassName="!mt-0"
+                    />
+                  </div>
+                  <div className="relative">
+                    <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Input 
+                      label=""
+                      placeholder="Years of Experience"
+                      type="number"
+                      required
+                      value={formData.experience}
+                      onChange={(e) => setFormData({...formData, experience: e.target.value})}
+                      className="pl-12 bg-gray-50 focus:bg-white"
+                      containerClassName="!mt-0"
+                    />
+                  </div>
+                  <div className="relative">
+                    <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Input 
+                      label=""
+                      placeholder="Service Area (e.g. Gurgaon)"
+                      type="text"
+                      required
+                      value={formData.location}
+                      onChange={(e) => setFormData({...formData, location: e.target.value})}
                       className="pl-12 bg-gray-50 focus:bg-white"
                       containerClassName="!mt-0"
                     />

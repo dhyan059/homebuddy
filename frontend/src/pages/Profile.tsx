@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { User, FileText, Settings, Heart, MapPin, Search, Plus, LogOut, CheckCircle } from "lucide-react";
+import { User, FileText, Settings, Heart, MapPin, Search, Plus, LogOut, CheckCircle, Star } from "lucide-react";
 import { StatusBadge, type StatusType } from "../components/StatusBadge";
 import { Modal } from "../components/Modal";
 import { Timeline, type OrderStage } from "../components/Timeline";
@@ -138,6 +138,27 @@ export default function Profile() {
     setSelectedOrderStage(stage);
     setSelectedOrderDate(date);
     setTrackingModalOpen(true);
+  };
+
+  // Rating Modal State
+  const [ratingModalOpen, setRatingModalOpen] = useState(false);
+  const [ratingOrder, setRatingOrder] = useState<any>(null);
+  const [ratingStars, setRatingStars] = useState(0);
+  const [ratingComment, setRatingComment] = useState("");
+  const [ratedOrders, setRatedOrders] = useState<Record<string, boolean>>({});
+
+  const openRatingModal = (order: any) => {
+    setRatingOrder(order);
+    setRatingStars(0);
+    setRatingComment("");
+    setRatingModalOpen(true);
+  };
+
+  const submitRating = () => {
+    if (ratingOrder) {
+      setRatedOrders(prev => ({ ...prev, [ratingOrder.id]: true }));
+    }
+    setRatingModalOpen(false);
   };
 
   const handleAddressSubmit = (e: React.FormEvent) => {
@@ -353,10 +374,18 @@ export default function Profile() {
                               </div>
                               <div className="flex-shrink-0 flex flex-col items-end gap-3 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-6">
                                 <span className="font-bold text-lg text-gray-800">{order.amount}</span>
-                                {order.status === 'Completed' ? (
-                                  <Button variant="secondary" className="!bg-gray-100 !text-gray-800 hover:!bg-gray-200 !py-2.5 !px-6 text-sm">
+                                {order.status === 'Completed' && !ratedOrders[order.id] ? (
+                                  <Button 
+                                    variant="secondary" 
+                                    className="!bg-gray-100 !text-gray-800 hover:!bg-gray-200 !py-2.5 !px-6 text-sm"
+                                    onClick={() => openRatingModal(order)}
+                                  >
                                     Rate Experience
                                   </Button>
+                                ) : order.status === 'Completed' && ratedOrders[order.id] ? (
+                                  <div className="text-sm font-bold text-green-600 flex items-center gap-1 bg-green-50 px-4 py-2.5 rounded-lg border border-green-200">
+                                    <CheckCircle className="h-4 w-4" /> Rated
+                                  </div>
                                 ) : null}
                               </div>
                             </div>
@@ -645,6 +674,42 @@ export default function Profile() {
             {editingAddressId ? "Save Changes" : "Save Address"}
           </Button>
         </form>
+      </Modal>
+
+      <Modal isOpen={ratingModalOpen} onClose={() => setRatingModalOpen(false)} title="Rate Your Experience">
+        <div className="text-center py-4">
+          <h3 className="font-bold text-gray-900 mb-2">How was your service?</h3>
+          <p className="text-sm text-gray-500 mb-6">Your feedback helps us improve {ratingOrder?.professional?.split(' ')[0] || 'your professional'}'s service.</p>
+          
+          <div className="flex justify-center gap-2 mb-8">
+            {[1, 2, 3, 4, 5].map(s => (
+              <button 
+                key={s} 
+                onClick={() => setRatingStars(s)}
+                className="focus:outline-none transition-transform hover:scale-110"
+              >
+                <Star className={`h-10 w-10 ${s <= ratingStars ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} />
+              </button>
+            ))}
+          </div>
+
+          <textarea 
+            placeholder="Write a comment (optional)..."
+            value={ratingComment}
+            onChange={(e) => setRatingComment(e.target.value)}
+            className="w-full border border-gray-200 rounded-xl p-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 mb-6"
+            rows={3}
+          ></textarea>
+
+          <Button 
+            fullWidth 
+            onClick={submitRating} 
+            disabled={ratingStars === 0}
+            className={ratingStars === 0 ? "opacity-50 cursor-not-allowed" : ""}
+          >
+            Submit Feedback
+          </Button>
+        </div>
       </Modal>
 
     </div>

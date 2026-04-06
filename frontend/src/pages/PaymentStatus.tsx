@@ -211,13 +211,9 @@ export default function PaymentStatus() {
 
                   <div className="flex gap-2 text-sm text-gray-600 mb-6 font-medium">
                      <span className="bg-gray-100 px-2.5 py-1 rounded-full">Plumber</span>
-                     <span className="bg-gray-100 px-2.5 py-1 rounded-full">Vaccinated</span>
                   </div>
 
                   <div className="flex gap-3">
-                    <button className="flex-1 bg-green-50 hover:bg-green-100 text-green-700 font-bold py-3 rounded-xl transition-colors flex justify-center items-center gap-2">
-                       Call
-                    </button>
                     <button onClick={() => setShowChat(true)} className="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-3 rounded-xl transition-colors flex justify-center items-center gap-2">
                        Chat
                     </button>
