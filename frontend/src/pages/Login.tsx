@@ -38,6 +38,7 @@ export default function Login() {
     const avatarUrl = `https://api.dicebear.com/7.x/initials/svg?seed=${name}`;
     localStorage.setItem("userName", name);
     localStorage.setItem("userAvatar", avatarUrl);
+    localStorage.setItem("isNewUser", "false");
     navigate('/profile');
   };
 

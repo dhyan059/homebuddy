@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSearchParams, useNavigate, Link } from "react-router-dom";
-import { CheckCircle2, XCircle, ArrowRight, RotateCcw } from "lucide-react";
+import { CheckCircle2, XCircle, ArrowRight, RotateCcw, Send, X } from "lucide-react";
 import { Modal } from "../components/Modal";
 import { Timeline } from "../components/Timeline";
 
@@ -12,6 +12,17 @@ export default function PaymentStatus() {
   const navigate = useNavigate();
   
   const [trackingModalOpen, setTrackingModalOpen] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [chatMessage, setChatMessage] = useState("");
+  const [chatHistory, setChatHistory] = useState([
+    { sender: 'pro', text: 'Hi! I will be there on time for your service.' }
+  ]);
+
+  const handleSendMessage = () => {
+    if (!chatMessage.trim()) return;
+    setChatHistory([...chatHistory, { sender: 'user', text: chatMessage }]);
+    setChatMessage("");
+  };
 
   const isSuccess = status === "success";
 
@@ -83,16 +94,9 @@ export default function PaymentStatus() {
               >
                 Track Live Order <ArrowRight className="h-5 w-5" />
               </button>
-              <div className="flex gap-4">
-                <button 
-                  className="flex-1 py-4 font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors text-sm"
-                >
-                  Download Invoice
-                </button>
-                <Link to="/profile" className="flex-1 flex justify-center items-center py-4 font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors text-sm">
-                  View Orders
-                </Link>
-              </div>
+              <Link to="/profile" className="w-full flex justify-center items-center py-4 font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-colors text-sm">
+                View Orders
+              </Link>
             </>
           ) : (
             <>
@@ -138,8 +142,8 @@ export default function PaymentStatus() {
              {/* Overlay info box */}
              <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-sm border border-gray-100 flex justify-between items-center z-10">
                  <div>
-                    <div className="font-extrabold text-blue-800 text-sm">Arriving in 16 mins</div>
-                    <div className="text-[10px] font-medium text-gray-500 mt-0.5">3.2 km away</div>
+                    <div className="font-extrabold text-blue-800 text-sm">Booking Confirmed</div>
+                    <div className="text-[10px] font-medium text-gray-500 mt-0.5">Share OTP on arrival</div>
                  </div>
                  <div className="bg-yellow-100 border border-yellow-200 px-3 py-1.5 rounded flex flex-col items-center">
                     <span className="text-[9px] uppercase tracking-widest font-bold text-yellow-800 leading-none">Share OTP</span>
@@ -153,7 +157,38 @@ export default function PaymentStatus() {
               <Timeline currentStage="OnTheWay" />
             </div>
 
-            <div className="w-1/2">
+             <div className="w-1/2">
+                {showChat ? (
+                   <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex flex-col h-[300px]">
+                      <div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-2">
+                         <div className="font-bold flex items-center gap-2 text-gray-900">
+                           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                           Mohammad
+                         </div>
+                         <button onClick={() => setShowChat(false)} className="text-gray-400 hover:text-gray-600"><X className="w-5 h-5" /></button>
+                      </div>
+                      <div className="flex-1 overflow-y-auto space-y-3 pr-2 mb-3">
+                         {chatHistory.map((msg, i) => (
+                            <div key={i} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
+                               <div className={`px-3 py-2 rounded-xl text-sm ${msg.sender === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-gray-100 text-gray-800 rounded-bl-none'}`}>
+                                 {msg.text}
+                               </div>
+                            </div>
+                         ))}
+                      </div>
+                      <div className="flex gap-2 relative">
+                         <input 
+                           type="text" 
+                           placeholder="Type a message..."
+                           value={chatMessage}
+                           onChange={e => setChatMessage(e.target.value)}
+                           onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
+                           className="flex-1 px-3 py-2 rounded-lg border border-gray-200 focus:outline-none focus:border-blue-500 text-sm"
+                         />
+                         <button onClick={handleSendMessage} className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"><Send className="w-4 h-4" /></button>
+                      </div>
+                   </div>
+                ) : (
                 <div className="bg-white p-5 rounded-2xl border border-gray-200 shadow-sm sticky top-0">
                   <div className="flex items-center justify-between mb-4">
                     <span className="bg-blue-100 text-blue-700 font-bold px-2.5 py-1 rounded-md text-xs uppercase tracking-wide">Pro Assigned</span>
@@ -183,12 +218,13 @@ export default function PaymentStatus() {
                     <button className="flex-1 bg-green-50 hover:bg-green-100 text-green-700 font-bold py-3 rounded-xl transition-colors flex justify-center items-center gap-2">
                        Call
                     </button>
-                    <button className="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-3 rounded-xl transition-colors flex justify-center items-center gap-2">
+                    <button onClick={() => setShowChat(true)} className="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold py-3 rounded-xl transition-colors flex justify-center items-center gap-2">
                        Chat
                     </button>
                   </div>
                 </div>
-            </div>
+                )}
+             </div>
          </div>
       </Modal>
     </div>

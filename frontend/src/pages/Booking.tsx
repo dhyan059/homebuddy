@@ -4,7 +4,7 @@ import { Stepper } from "../components/Stepper";
 import { CartItemCard } from "../components/CartItemCard";
 import { DatePicker } from "../components/DatePicker";
 import { useCart } from "../CartContext";
-import { ArrowRight, ArrowLeft, MapPin, Calendar as CalendarIcon, Clock, Map, ShoppingBag, Plus } from "lucide-react";
+import { ArrowRight, ArrowLeft, MapPin, Calendar as CalendarIcon, Clock, ShoppingBag, Plus } from "lucide-react";
 import { Modal } from "../components/Modal";
 
 export default function Booking() {
@@ -24,6 +24,9 @@ export default function Booking() {
   const [addModalOpen, setAddModalOpen] = useState(false);
   const [newFlat, setNewFlat] = useState("");
   const [newStreet, setNewStreet] = useState("");
+  const [newCity, setNewCity] = useState("Gurgaon");
+  const [newState, setNewState] = useState("");
+  const [newPincode, setNewPincode] = useState("");
   const [newType, setNewType] = useState<"Home" | "Office" | "Other">("Home");
 
   if (cart.length === 0) {
@@ -49,16 +52,19 @@ export default function Booking() {
   ]);
 
   const handleSaveAddress = () => {
-     if (!newFlat.trim() || !newStreet.trim()) return;
+     if (!newFlat.trim() || !newStreet.trim() || !newCity.trim() || !newState.trim() || !newPincode.trim()) return;
      const newId = Date.now();
      setAddresses([
-       { id: newId, type: newType, name: "Demo User", address: `${newFlat}, ${newStreet}` },
+       { id: newId, type: newType, name: "Demo User", address: `${newFlat}, ${newStreet}, ${newCity}, ${newState} - ${newPincode}` },
        ...addresses
      ]);
      setSelectedAddress(newId);
      setAddModalOpen(false);
      setNewFlat("");
      setNewStreet("");
+     setNewCity("Gurgaon");
+     setNewState("");
+     setNewPincode("");
      setNewType("Home");
   };
 
@@ -134,16 +140,14 @@ export default function Booking() {
                </h1>
 
                {/* Interactive OpenStreetMap iframe */}
-               <div className="w-full h-80 bg-gray-200 rounded-2xl mb-8 relative overflow-hidden border border-gray-300 shadow-inner">
+               <div className="w-full h-80 bg-gray-200 rounded-2xl mb-8 relative overflow-hidden border border-gray-300 shadow-inner group">
                   <iframe 
                     title="Real Location Map"
                     width="100%" 
                     height="100%" 
                     frameBorder="0" 
-                    scrolling="no" 
-                    marginHeight={0} 
-                    marginWidth={0} 
-                    src="https://www.openstreetmap.org/export/embed.html?bbox=76.9944%2C28.4116%2C77.0624%2C28.4891&amp;layer=mapnik&amp;marker=28.4504%2C77.0284" 
+                    scrolling="yes" 
+                    src={`https://maps.google.com/maps?&hl=en&q=${encodeURIComponent(addresses.find(a => a.id === selectedAddress)?.address || 'Gurgaon, India')}&t=&z=14&ie=UTF8&iwloc=B&output=embed`} 
                     style={{ border: 0 }}
                   ></iframe>
                </div>
@@ -261,53 +265,110 @@ export default function Booking() {
       {/* Add Address Modal Component */}
       <Modal isOpen={addModalOpen} onClose={() => setAddModalOpen(false)} title="Add New Address">
          <div className="space-y-4">
-           <div>
-             <label className="block text-sm font-bold text-gray-700 mb-1">Flat / House No. / Building</label>
-             <input 
-               type="text" 
-               placeholder="e.g. Flat 101, B Block" 
-               value={newFlat}
-               onChange={(e) => setNewFlat(e.target.value)}
-               className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" 
-             />
-           </div>
-           <div>
-             <label className="block text-sm font-bold text-gray-700 mb-1">Society / Street / Area</label>
-             <input 
-               type="text" 
-               placeholder="e.g. Sector 14, MG Road" 
-               value={newStreet}
-               onChange={(e) => setNewStreet(e.target.value)}
-               className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" 
-             />
-           </div>
-           
-           <div>
-             <label className="block text-sm font-bold text-gray-700 mb-2">Save Address As</label>
-             <div className="flex gap-2">
-               {["Home", "Office", "Other"].map(type => (
-                 <button 
-                   key={type}
-                   onClick={() => setNewType(type as any)}
-                   className={`flex-1 py-2 rounded-lg font-bold text-sm transition-all border ${
-                     newType === type ? 'bg-primary text-white border-primary shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
-                   }`}
-                 >
-                   {type}
-                 </button>
-               ))}
-             </div>
-           </div>
+            {/* Interactive Map Mockup */}
+            <div className="w-full h-48 bg-gray-100 rounded-xl relative overflow-hidden border border-gray-300 group cursor-crosshair">
+               <iframe 
+                 title="Drag Map"
+                 width="100%" 
+                 height="100%" 
+                 frameBorder="0" 
+                 scrolling="yes" 
+                 src={`https://maps.google.com/maps?&hl=en&q=${encodeURIComponent((newStreet ? newStreet + ', ' : '') + (newCity || 'Gurgaon') + ', India')}&t=&z=14&ie=UTF8&iwloc=B&output=embed`} 
+                 style={{ border: 0, opacity: 0.95 }}
+                 className="transition-opacity"
+               ></iframe>
+               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                 <div className="bg-primary text-white p-1.5 rounded-full shadow-2xl relative -top-6 drop-shadow-[0_10px_10px_rgba(0,0,0,0.4)]">
+                    <MapPin className="w-6 h-6 fill-primary" />
+                 </div>
+               </div>
+               <div className="absolute top-1/2 left-1/2 -mt-1 -ml-1 w-2 h-2 bg-black/30 rounded-full blur-[2px] pointer-events-none"></div>
+               <div className="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-gray-200 text-xs font-bold text-gray-700 flex justify-between items-center shadow-sm pointer-events-none">
+                  <span>GPS Location Mode</span>
+                  <span className="text-primary truncate max-w-[150px]">{newCity || 'Location'}</span>
+               </div>
+            </div>
 
-           <button 
-             onClick={handleSaveAddress}
-             disabled={!newFlat.trim() || !newStreet.trim()}
-             className={`w-full py-4 mt-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all text-white text-lg ${
-               !newFlat.trim() || !newStreet.trim() ? 'bg-primary/60 cursor-not-allowed' : 'bg-primary hover:bg-primary-dark shadow-md hover:shadow-lg'
-             }`}
-           >
-             Save Address
-           </button>
+            <div className="grid grid-cols-2 gap-3">
+               <div className="col-span-2">
+                 <label className="block text-sm font-bold text-gray-700 mb-1">Flat / House No. / Building</label>
+                 <input 
+                   type="text" 
+                   placeholder="e.g. Flat 101, B Block" 
+                   value={newFlat}
+                   onChange={(e) => setNewFlat(e.target.value)}
+                   className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" 
+                 />
+               </div>
+               <div className="col-span-2">
+                 <label className="block text-sm font-bold text-gray-700 mb-1">Street / Area</label>
+                 <input 
+                   type="text" 
+                   placeholder="e.g. Sector 14, MG Road" 
+                   value={newStreet}
+                   onChange={(e) => setNewStreet(e.target.value)}
+                   className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" 
+                 />
+               </div>
+               <div>
+                 <label className="block text-sm font-bold text-gray-700 mb-1">City</label>
+                 <input 
+                   type="text" 
+                   placeholder="e.g. Gurgaon" 
+                   value={newCity}
+                   onChange={(e) => setNewCity(e.target.value)}
+                   className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" 
+                 />
+               </div>
+               <div>
+                 <label className="block text-sm font-bold text-gray-700 mb-1">State</label>
+                 <input 
+                   type="text" 
+                   placeholder="e.g. Haryana" 
+                   value={newState}
+                   onChange={(e) => setNewState(e.target.value)}
+                   className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" 
+                 />
+               </div>
+               <div className="col-span-2">
+                 <label className="block text-sm font-bold text-gray-700 mb-1">Pincode</label>
+                 <input 
+                   type="text" 
+                   placeholder="e.g. 122002" 
+                   value={newPincode}
+                   maxLength={6}
+                   onChange={(e) => setNewPincode(e.target.value.replace(/\D/g, ''))}
+                   className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" 
+                 />
+               </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-bold text-gray-700 mb-2 mt-1">Save Address As</label>
+              <div className="flex gap-2">
+                {["Home", "Office", "Other"].map(type => (
+                  <button 
+                    key={type}
+                    onClick={() => setNewType(type as any)}
+                    className={`flex-1 py-1.5 rounded-lg font-bold text-sm transition-all border ${
+                      newType === type ? 'bg-primary text-white border-primary shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button 
+              onClick={handleSaveAddress}
+              disabled={!newFlat.trim() || !newStreet.trim() || !newCity.trim() || !newState.trim() || !newPincode.trim()}
+              className={`w-full py-3 mt-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all text-white text-lg border-2 ${
+                !newFlat.trim() || !newStreet.trim() || !newCity.trim() || !newState.trim() || !newPincode.trim() ? 'bg-primary/50 border-transparent cursor-not-allowed text-white/80' : 'bg-primary border-primary hover:bg-primary-dark shadow-md hover:shadow-lg'
+              }`}
+            >
+              Save Address
+            </button>
          </div>
       </Modal>
 

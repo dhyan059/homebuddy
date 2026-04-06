@@ -10,7 +10,7 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 
 // Mock Active and Past Orders
-const activeOrders = [
+const mockActiveOrders = [
   {
     id: "ORD-9821-XA",
     service: "AC Service & Repair",
@@ -31,7 +31,7 @@ const activeOrders = [
   }
 ];
 
-const pastOrders = [
+const mockPastOrders = [
   {
     id: "ORD-1120-CC",
     service: "Haircut & Styling",
@@ -76,6 +76,9 @@ const initialAddresses = [
 
 export default function Profile() {
   const navigate = useNavigate();
+  const isNewUser = localStorage.getItem("isNewUser") === "true";
+  const activeOrders = isNewUser ? [] : mockActiveOrders;
+  const pastOrders = isNewUser ? [] : mockPastOrders;
   const [activeSection, setActiveSection] = useState<'orders' | 'favorites' | 'addresses' | 'settings'>('orders');
   const [activeTab, setActiveTab] = useState<'active' | 'history'>('active');
   const [userName, setUserName] = useState("Demo User");
@@ -574,11 +577,11 @@ export default function Profile() {
 
         <div className="mt-8 p-4 bg-blue-50 rounded-xl border border-blue-100 flex items-start gap-4">
           <div className="bg-blue-600 text-white rounded-full p-2 h-10 w-10 flex items-center justify-center font-bold flex-shrink-0">
-            {activeOrders[0]?.professional.charAt(0)}
+            {activeOrders[0]?.professional?.charAt(0) || 'P'}
           </div>
           <div>
             <h4 className="font-bold text-blue-900">Contact Professional</h4>
-            <p className="text-sm text-blue-800 mt-1">If you need immediate assistance, call {activeOrders[0]?.professional.split(' ')[0]} at +91 99****6789.</p>
+            <p className="text-sm text-blue-800 mt-1">If you need immediate assistance, call {activeOrders[0]?.professional?.split(' ')[0] || 'your professional'} at +91 99****6789.</p>
           </div>
         </div>
       </Modal>

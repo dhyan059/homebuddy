@@ -35,6 +35,8 @@ export const categories: Category[] = [
 export const services: Service[] = [
   { serviceId: 's1', categoryId: 'c1', name: 'Haircut & Styling', price: 499, duration: '45 mins', description: 'Professional haircut and styling at your home.', rating: 4.8 },
   { serviceId: 's2', categoryId: 'c1', name: 'Facial & Cleanup', price: 999, duration: '60 mins', description: 'Deep cleansing facial with premium products.', rating: 4.7 },
+  { serviceId: 's7', categoryId: 'c1', name: 'Manicure & Pedicure', price: 799, duration: '90 mins', description: 'Complete hand and foot care with polish.', rating: 4.9 },
+  { serviceId: 's8', categoryId: 'c1', name: 'Party Makeup', price: 2499, duration: '120 mins', description: 'Full face makeup and hairstyling by experts.', rating: 4.6 },
   { serviceId: 's3', categoryId: 'c2', name: 'AC Service & Repair', price: 699, duration: '90 mins', description: 'Complete AC servicing and minor repairs.', rating: 4.9 },
   { serviceId: 's4', categoryId: 'c3', name: 'Intense Home Cleaning', price: 2999, duration: '4-5 hrs', description: 'Deep cleaning of the entire home with mechanized equipment.', rating: 4.6 },
   { serviceId: 's5', categoryId: 'c4', name: 'Leakage Repair', price: 299, duration: '30 mins', description: 'Fixing basic plumbing leakages.', rating: 4.5 },
