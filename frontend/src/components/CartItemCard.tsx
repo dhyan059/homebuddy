@@ -13,10 +13,15 @@ export function CartItemCard({ service }: CartItemCardProps) {
          <Trash2 className="h-4 w-4 group-hover:scale-110 transition-transform" />
        </button>
        
-       <div className="bg-gray-50 rounded-xl w-full md:w-32 h-32 flex items-center justify-center border border-gray-100 flex-shrink-0 relative overflow-hidden">
-         {/* Placeholder Image element */}
-         <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(service.name)}&background=random&size=150`} alt={service.name} className="absolute inset-0 w-full h-full object-cover opacity-20 filter blur-sm scale-110" />
-         <Tag className="h-10 w-10 text-primary relative z-10" />
+       <div className="bg-gray-50 rounded-xl w-full md:w-32 h-32 flex items-center justify-center border border-gray-100 flex-shrink-0 relative overflow-hidden group">
+         {service.image ? (
+           <img src={service.image} alt={service.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+         ) : (
+           <>
+             <img src={`https://ui-avatars.com/api/?name=${encodeURIComponent(service.name)}&background=random&size=150`} alt={service.name} className="absolute inset-0 w-full h-full object-cover opacity-20 filter blur-sm scale-110" />
+             <Tag className="h-10 w-10 text-primary relative z-10" />
+           </>
+         )}
        </div>
        <div className="flex-1 flex flex-col pr-8">
           <div className="flex justify-between items-start mb-2">

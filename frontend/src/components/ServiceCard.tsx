@@ -27,14 +27,24 @@ export function ServiceCard({ service, showCategory = false }: ServiceCardProps)
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-md hover:border-primary/20 transition-all h-full">
+      {service.image && (
+        <div className="w-full h-48 overflow-hidden relative group">
+          <img src={service.image} alt={service.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <div className="absolute top-4 right-4 flex items-center gap-1 bg-white/95 backdrop-blur shadow-sm text-green-700 px-2.5 py-1 rounded-lg text-xs font-bold">
+            <Star className="h-3.5 w-3.5 fill-current" /> {service.rating}
+          </div>
+        </div>
+      )}
       <div className="p-6 flex-grow flex flex-col">
         <div className="flex justify-between items-start mb-2">
           <Link to={`/service/${service.serviceId}`} className="group relative">
             <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-primary transition-colors">{service.name}</h3>
           </Link>
-          <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded text-xs font-bold">
-            <Star className="h-3 w-3 fill-current" /> {service.rating}
-          </div>
+          {!service.image && (
+            <div className="flex items-center gap-1 bg-green-50 text-green-700 px-2 py-1 rounded text-xs font-bold">
+              <Star className="h-3 w-3 fill-current" /> {service.rating}
+            </div>
+          )}
         </div>
         
         {showCategory && category && (

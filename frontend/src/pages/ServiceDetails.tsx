@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { services, categories } from "../utils/data";
 import { Star, Clock, ShieldCheck, ArrowRight, ArrowLeft, ShoppingCart } from "lucide-react";
 import { useCart } from "../CartContext";
@@ -29,8 +29,16 @@ export default function ServiceDetails() {
   return (
     <div className="flex-grow bg-slate-50 min-h-screen pb-16">
       {/* Hero Section */}
-      <div className="bg-primary text-white py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+      <div className="bg-primary text-white py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden min-h-[40vh] flex items-center">
+        {service.image && (
+          <div className="absolute inset-0 w-full h-full">
+            <img src={service.image} alt={service.name} className="w-full h-full object-cover opacity-30" />
+            <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/80 to-transparent"></div>
+          </div>
+        )}
+        {!service.image && (
+          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent"></div>
+        )}
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row gap-8 items-center">
            <div className="flex-1">
              <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-primary-200 hover:text-white mb-6 transition-colors">

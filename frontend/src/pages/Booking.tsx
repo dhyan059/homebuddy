@@ -46,7 +46,8 @@ export default function Booking() {
     );
   }
 
-  const [addresses, setAddresses] = useState([
+  const isNewUser = localStorage.getItem("isNewUser") === "true";
+  const [addresses, setAddresses] = useState(isNewUser ? [] : [
     { id: 1, type: "Home", name: "Demo User", address: "Flat 4B, Signature Towers, MG Road, Gurgaon, 122002" },
     { id: 2, type: "Office", name: "Demo User", address: "Floor 3, Tech Park, Cyber City, Gurgaon, 122008" }
   ]);
@@ -163,20 +164,26 @@ export default function Booking() {
                </div>
 
                <div className="space-y-4 mb-6">
-                 {addresses.map((addr) => (
-                   <label key={addr.id} className={`flex items-start gap-4 p-5 rounded-xl border-2 cursor-pointer transition-all ${selectedAddress === addr.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-100 hover:border-gray-200 bg-white'}`}>
-                     <div className="mt-1">
-                        <input type="radio" name="address" checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="w-5 h-5 text-primary" />
-                     </div>
-                     <div>
-                        <div className="flex items-center gap-2 mb-1">
-                           <span className="bg-gray-100 text-gray-700 text-xs font-bold px-2 py-0.5 rounded uppercase">{addr.type}</span>
-                           <span className="font-bold text-gray-900">{addr.name}</span>
-                        </div>
-                        <p className="text-sm text-gray-600 leading-relaxed">{addr.address}</p>
-                     </div>
-                   </label>
-                 ))}
+                 {addresses.length === 0 ? (
+                   <div className="text-center py-8 bg-gray-50 rounded-xl border border-gray-100 text-gray-500">
+                     No saved addresses. Please add an address to continue.
+                   </div>
+                 ) : (
+                   addresses.map((addr) => (
+                     <label key={addr.id} className={`flex items-start gap-4 p-5 rounded-xl border-2 cursor-pointer transition-all ${selectedAddress === addr.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-100 hover:border-gray-200 bg-white'}`}>
+                       <div className="mt-1">
+                          <input type="radio" name="address" checked={selectedAddress === addr.id} onChange={() => setSelectedAddress(addr.id)} className="w-5 h-5 text-primary" />
+                       </div>
+                       <div>
+                          <div className="flex items-center gap-2 mb-1">
+                             <span className="bg-gray-100 text-gray-700 text-xs font-bold px-2 py-0.5 rounded uppercase">{addr.type}</span>
+                             <span className="font-bold text-gray-900">{addr.name}</span>
+                          </div>
+                          <p className="text-sm text-gray-600 leading-relaxed">{addr.address}</p>
+                       </div>
+                     </label>
+                   ))
+                 )}
                </div>
              </div>
           )}

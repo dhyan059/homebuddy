@@ -58,6 +58,8 @@ export default function Signup() {
       setIsLoading(false);
       const avatarUrl = `https://api.dicebear.com/7.x/initials/svg?seed=${formData.name}`;
       localStorage.setItem("userName", formData.name);
+      localStorage.setItem("userEmail", formData.email);
+      localStorage.setItem("userPhone", formData.phone);
       localStorage.setItem("userAvatar", avatarUrl);
       localStorage.setItem("isNewUser", "true");
       navigate("/profile");

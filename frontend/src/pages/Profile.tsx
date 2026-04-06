@@ -84,7 +84,7 @@ export default function Profile() {
   const [userName, setUserName] = useState("Demo User");
   const [userAvatar, setUserAvatar] = useState("");
 
-  const [addresses, setAddresses] = useState(initialAddresses);
+  const [addresses, setAddresses] = useState(isNewUser ? [] : initialAddresses);
   const [addressModalOpen, setAddressModalOpen] = useState(false);
   const [editingAddressId, setEditingAddressId] = useState<string | null>(null);
 
@@ -102,10 +102,10 @@ export default function Profile() {
 
   // Settings State
   const [settingsName, setSettingsName] = useState(userName);
-  const [settingsEmail, setSettingsEmail] = useState("demo.user@example.com");
-  const [settingsPhone, setSettingsPhone] = useState("9876543210");
-  const [settingsDOB, setSettingsDOB] = useState("1990-01-01");
-  const [settingsGender, setSettingsGender] = useState("male");
+  const [settingsEmail, setSettingsEmail] = useState(isNewUser ? (localStorage.getItem("userEmail") || "") : "demo.user@example.com");
+  const [settingsPhone, setSettingsPhone] = useState(isNewUser ? (localStorage.getItem("userPhone") || "") : "9876543210");
+  const [settingsDOB, setSettingsDOB] = useState(isNewUser ? "" : "1990-01-01");
+  const [settingsGender, setSettingsGender] = useState(isNewUser ? "" : "male");
   const [settingsLoading, setSettingsLoading] = useState(false);
   const [settingsSuccess, setSettingsSuccess] = useState(false);
 
@@ -132,7 +132,7 @@ export default function Profile() {
   const [selectedOrderStage, setSelectedOrderStage] = useState<OrderStage>("Requested");
   const [selectedOrderDate, setSelectedOrderDate] = useState<string>("");
 
-  const favoriteServices = services.slice(0, 2);
+  const favoriteServices = isNewUser ? [] : services.slice(0, 2);
 
   const openTracking = (stage: OrderStage, date: string) => {
     setSelectedOrderStage(stage);
@@ -223,7 +223,7 @@ export default function Profile() {
                 )}
               </div>
               <h2 className="font-bold text-xl text-gray-900">{userName}</h2>
-              <p className="text-gray-500 text-sm mt-1">+91 9876543210</p>
+              {settingsPhone && <p className="text-gray-500 text-sm mt-1">+91 {settingsPhone}</p>}
             </div>
             <div className="space-y-2">
               <button
@@ -375,9 +375,13 @@ export default function Profile() {
             <div className="animate-in fade-in slide-in-from-bottom-4">
               <h1 className="text-3xl font-bold text-gray-900 mb-8">Favorites</h1>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                {favoriteServices.map(service => (
+                {favoriteServices.length > 0 ? favoriteServices.map(service => (
                   <ServiceCard key={service.serviceId} service={service} showCategory />
-                ))}
+                )) : (
+                  <div className="col-span-2 text-center py-12 bg-white rounded-xl border border-gray-200 text-gray-500">
+                    No favorites yet. Start exploring services!
+                  </div>
+                )}
               </div>
             </div>
           )}

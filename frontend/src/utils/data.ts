@@ -1,3 +1,12 @@
+import haircutImg from '../assets/haircut_styling.png';
+import facialImg from '../assets/facial_cleanup.png';
+import manicureImg from '../assets/manicure_pedicure.png';
+import makeupImg from '../assets/party_makeup.png';
+import acImg from '../assets/ac_service.png';
+import cleaningImg from '../assets/home_cleaning.png';
+import leakageImg from '../assets/leakage_repair.png';
+import switchboardImg from '../assets/switchboard_repair.png';
+
 export interface Category {
   id: string;
   name: string;
@@ -13,6 +22,7 @@ export interface Service {
   duration: string;
   description: string;
   rating: number;
+  image?: string;
 }
 
 export interface Professional {
@@ -33,14 +43,14 @@ export const categories: Category[] = [
 ];
 
 export const services: Service[] = [
-  { serviceId: 's1', categoryId: 'c1', name: 'Haircut & Styling', price: 499, duration: '45 mins', description: 'Professional haircut and styling at your home.', rating: 4.8 },
-  { serviceId: 's2', categoryId: 'c1', name: 'Facial & Cleanup', price: 999, duration: '60 mins', description: 'Deep cleansing facial with premium products.', rating: 4.7 },
-  { serviceId: 's7', categoryId: 'c1', name: 'Manicure & Pedicure', price: 799, duration: '90 mins', description: 'Complete hand and foot care with polish.', rating: 4.9 },
-  { serviceId: 's8', categoryId: 'c1', name: 'Party Makeup', price: 2499, duration: '120 mins', description: 'Full face makeup and hairstyling by experts.', rating: 4.6 },
-  { serviceId: 's3', categoryId: 'c2', name: 'AC Service & Repair', price: 699, duration: '90 mins', description: 'Complete AC servicing and minor repairs.', rating: 4.9 },
-  { serviceId: 's4', categoryId: 'c3', name: 'Intense Home Cleaning', price: 2999, duration: '4-5 hrs', description: 'Deep cleaning of the entire home with mechanized equipment.', rating: 4.6 },
-  { serviceId: 's5', categoryId: 'c4', name: 'Leakage Repair', price: 299, duration: '30 mins', description: 'Fixing basic plumbing leakages.', rating: 4.5 },
-  { serviceId: 's6', categoryId: 'c5', name: 'Switchboard Repair', price: 199, duration: '30 mins', description: 'Repair or replace faulty switchboards.', rating: 4.8 },
+  { serviceId: 's1', categoryId: 'c1', name: 'Haircut & Styling', price: 499, duration: '45 mins', description: 'Professional haircut and styling at your home.', rating: 4.8, image: haircutImg },
+  { serviceId: 's2', categoryId: 'c1', name: 'Facial & Cleanup', price: 999, duration: '60 mins', description: 'Deep cleansing facial with premium products.', rating: 4.7, image: facialImg },
+  { serviceId: 's7', categoryId: 'c1', name: 'Manicure & Pedicure', price: 799, duration: '90 mins', description: 'Complete hand and foot care with polish.', rating: 4.9, image: manicureImg },
+  { serviceId: 's8', categoryId: 'c1', name: 'Party Makeup', price: 2499, duration: '120 mins', description: 'Full face makeup and hairstyling by experts.', rating: 4.6, image: makeupImg },
+  { serviceId: 's3', categoryId: 'c2', name: 'AC Service & Repair', price: 699, duration: '90 mins', description: 'Complete AC servicing and minor repairs.', rating: 4.9, image: acImg },
+  { serviceId: 's4', categoryId: 'c3', name: 'Intense Home Cleaning', price: 2999, duration: '4-5 hrs', description: 'Deep cleaning of the entire home with mechanized equipment.', rating: 4.6, image: cleaningImg },
+  { serviceId: 's5', categoryId: 'c4', name: 'Leakage Repair', price: 299, duration: '30 mins', description: 'Fixing basic plumbing leakages.', rating: 4.5, image: leakageImg },
+  { serviceId: 's6', categoryId: 'c5', name: 'Switchboard Repair', price: 199, duration: '30 mins', description: 'Repair or replace faulty switchboards.', rating: 4.8, image: switchboardImg },
 ];
 
 export const professionals: Professional[] = [
