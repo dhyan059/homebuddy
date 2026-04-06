@@ -30,6 +30,7 @@ export default function Payment() {
   const [cardExpiry, setCardExpiry] = useState("");
   const [cardCvv, setCardCvv] = useState("");
   const [selectedBank, setSelectedBank] = useState("");
+  const [upiId, setUpiId] = useState("");
 
 
   // Modal States
@@ -102,7 +103,8 @@ export default function Payment() {
     let isValid = false;
 
     if (paymentMethod === 'upi') {
-      isValid = true;
+      isValid = upiId.trim().includes('@') && upiId.trim().length > 3;
+      if (!isValid) setErrorMessage("Please enter a valid UPI ID (e.g., yourname@bank).");
     } else if (paymentMethod === 'card') {
       const cleanCard = cardNumber.replace(/\s/g, '');
       const isCardValidLength = cleanCard.length === 12;
@@ -231,6 +233,18 @@ export default function Payment() {
                   </div>
                   <p className="text-sm text-gray-500 mt-2">Pay securely using standard UPI gateway.</p>
                 </div>
+              </div>
+
+              <div className={`overflow-hidden transition-all duration-500 ease-in-out ${paymentMethod === 'upi' ? 'max-h-[200px] mt-6 opacity-100' : 'max-h-0 opacity-0'}`}>
+                  <div className="space-y-3">
+                     <input 
+                        type="text" 
+                        placeholder="Enter your UPI ID (e.g., name@okicici)" 
+                        value={upiId}
+                        onChange={(e) => setUpiId(e.target.value)}
+                        className="w-full px-4 py-4 rounded-xl border border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-500/10 outline-none bg-white font-bold text-gray-700 transition-all shadow-sm"
+                     />
+                  </div>
               </div>
             </label>
 
